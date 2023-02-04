@@ -1,0 +1,60 @@
+package TugasPBO;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Scanner;
+
+
+public class UpdateData {
+    static final String jdbc = "com.mysql.jdbc.Driver";
+    static final String url = "jdbc:mysql://localhost/perpus";
+    static final String username = "root";
+    static final String password = "";
+    
+    static Connection con;
+    static ResultSet rs;
+    static PreparedStatement ps;
+    public static void update() throws Exception {
+        Scanner sc = new Scanner(System.in);
+        
+        System.out.println("             UPDATE DATA PEMINJAMAN             ");
+        System.out.println("===============================================");
+        
+        System.out.print("Nama Sebelumnya : ");
+        String nama = sc.nextLine();
+        System.out.print("Nama  : ");
+        String nama1 = sc.nextLine();
+        System.out.print("Judul Buku : ");
+        String judul_buku = sc.nextLine();
+        System.out.print("Jenis Kelamin [L/P] : ");
+        String jenis_kelamin = sc.nextLine();
+        System.out.print("ID Admin : ");
+        String id_admin = sc.nextLine();
+        
+        try{
+            Class.forName(jdbc);
+            con = DriverManager.getConnection(url,username,password);
+            String query = "update peminjaman set nama=?, judul_buku=?, jenis_kelamin=?, id_admin=? WHERE nama=?";
+            
+            ps = con.prepareStatement(query);
+            
+            ps.setString(1, nama1);
+            ps.setString(2, judul_buku);
+            ps.setString(3, jenis_kelamin);
+            ps.setString(4, id_admin);
+            ps.setString(5, nama);
+            
+            if (ps.executeUpdate() > 0) {
+                System.out.println("Proses Update Berhasil!");
+            }
+            else{
+                System.out.println("Proses Update Gagal");
+            } 
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+}
